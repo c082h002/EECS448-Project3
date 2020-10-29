@@ -42,11 +42,56 @@ void queen::attack(int row, int col, char **b)
 
 bool queen::validMove(int row, int col, char **b)
 {
-    if(row > currentRowPos+1 || col > currentColPos+1 || row < currentRowPos-1 || col < currentColPos-1)
+   if((row - location[0] == col - location[1] || row - location[0] == location[1] - col) && row - location[0] != 0)
     {
-        return(false); 
+        int rowpace = row -location[0];
+        int colpace = col -location[1];
+        if (rowpace > 0)
+            rowpace = 1;
+        else
+            rowpace = -1;
+        if (colpace > 0)
+            colpace = 1;
+        else
+            colpace = -1;
+        int i = location[0]+rowpace;
+        int j = location[1]+colpace;
+        for (; i!=row; i +=rowpace)
+        {
+            if (this->getCurrentBox()->getboard()->getbox(i,j)->hasPiece())
+                return false;
+            else
+                j += colpace;
+        }
+        return true;
     }
-    else return(true);
+    if (row == location[0] && col != location[1])
+    {
+        int pace = col - location[1];
+        if (pace > 0)
+            pace = 1;
+        else
+            pace = -1;
+        for (int i =location[1]+pace; i != col; i+=pace)
+            if (this->getCurrentBox()->getboard()->getbox(x,i)->hasPiece())
+                return false;
+        return true;
+    }
+    else if (col == location[1] && row != location[0] )
+    {
+        int pace = row - location[0];
+        if (pace > 0)
+            pace = 1;
+        else
+            pace = -1;
+        for (int i =location[0]+pace; i != row; i+=pace)
+            if (this->getCurrentBox()->getboard()->getbox(i,col)->hasPiece())
+                return false;
+        return true;
+    }
+    else
+        return false;
+}
 }
 
 char queen::getSymbol()const
