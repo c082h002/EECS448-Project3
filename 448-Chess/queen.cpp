@@ -37,7 +37,17 @@
 
 void queen::attack(int row, int col, char **b)
 {
-    //needs to be defined
+    {
+    if(!validAttack(row, col, b))
+    {
+        throw(std::runtime_error("invalid ATTACK for QUEEN"));
+    }
+    else
+    {
+        currentColPos = col;
+        currentRowPos = row;
+    }
+}
 }
 
 bool queen::validMove(int row, int col, char **b)
